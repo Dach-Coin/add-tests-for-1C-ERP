@@ -1,1 +1,1 @@
-call vrunner syntax-check --settings tools/JSON/vrunner.json
+call vrunner syntax-check --settings tools/JSON/vrunner.json --allure-results2 out/syntaxCheck/allure --junitpath out/junit/syntaxCheck.xml

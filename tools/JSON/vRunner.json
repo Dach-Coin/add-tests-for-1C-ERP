@@ -26,8 +26,7 @@
         "--groupbymetadata": true,
         "--mode": ["-Server", "-ExternalConnection", "-ThinClient", "-WebClient"],
         "--exception-file": "./tools/JSON/ИсключенияИзСинтаксическихПроверок.txt",
-        "-AllExtensions" : true,
-        "--junitpath": "out/junit"
+        "-AllExtensions" : true
     },
     "run": {
         "--command": "ЗапуститьОбновлениеИнформационнойБазы;ЗавершитьРаботуСистемы;"
