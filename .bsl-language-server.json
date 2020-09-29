@@ -77,7 +77,9 @@
 
             "ExcessiveAutoTestCheck": false,
 
-            "IsInRoleMethodDiagnostic": false
+            "IsInRoleMethodDiagnostic": false,
+
+            "ExportVariables": false
 
         }
 
