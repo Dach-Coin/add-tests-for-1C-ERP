@@ -1,0 +1,38 @@
+{ "$schema":"https://raw.githubusercontent.com/silverbulleters/vanessa-runner/develop/behavior-schema.json",
+    "ВыполнитьСценарии": "Истина",
+    "ЗавершитьРаботуСистемы": "Истина",
+    "ЗакрытьTestClientПослеЗапускаСценариев": "Истина",
+    "DebugLog": "Истина",
+
+    "КаталогПроекта": "$workspaceRoot",
+    "КаталогФич": "$workspaceRoot/features",
+    "КаталогиБиблиотек": [
+        "$instrumentsRoot/features/libraries",
+        "$workspaceRoot/features"
+    ],
+
+    "ИмяСборки": "my-project",
+
+    "СписокТеговИсключение": [
+        "IgnoreOnCIMainBuild",
+        "FirstStart",
+        "Draft"
+    ],
+
+    "ДелатьОтчетВФорматеjUnit": "Истина",
+    "ДелатьОтчетВФорматеАллюр": "Истина",
+    "КаталогOutputAllureБазовый": "$workspaceRoot/out/bddallure",
+    "КаталогOutputjUnit": "$workspaceRoot/out/junit",
+    
+    "ВыгружатьСтатусВыполненияСценариевВФайл": "Истина",
+    "ПутьКФайлуДляВыгрузкиСтатусаВыполненияСценариев": "$workspaceRoot/out/vbStatus.log",
+    
+    "ДелатьЛогВыполненияСценариевВТекстовыйФайл": "Истина",    
+    "ИмяФайлаЛогВыполненияСценариев": "$workspaceRoot/out/vbOnline.log",
+
+    "ВыводитьВЛогВыполнениеШагов": "Истина",
+    "ДелатьЛогВыполненияСценариевВЖР": "Истина",
+
+    "ДелатьСкриншотПриВозникновенииОшибки": "Ложь"
+
+}

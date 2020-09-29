@@ -1,0 +1,86 @@
+{
+    "$schema": "https://1c-syntax.github.io/bsl-language-server/configuration/schema.json",
+
+    "language": "ru",
+
+    "diagnostics": {
+        
+        "computeTrigger": "onType",
+        
+        "parameters": {
+
+            "CyclomaticComplexity": {
+                "complexityThreshold": 40,
+                "checkModuleBody": true
+            },
+    
+            "NestedStatements": {
+                "maxAllowedLevel": 5
+            },
+    
+            "MethodSize": { 
+                "maxMethodSize": 700
+            },
+    
+            "NumberOfParams": {
+                "maxParamsCount": 9
+            },
+    
+            "NumberOfOptionalParams": {
+                "maxOptionalParamsCount": 5
+            },
+    
+            "NumberOfValuesInStructureConstructor": {
+                "maxValuesCount": 5
+            },
+    
+            "DeprecatedMessage": false,
+    
+            "DeprecatedTypeManagedForm": false,
+    
+            "LineLength": {
+                "maxLineLength": 180
+            },
+    
+            "CognitiveComplexity": {
+                "complexityThreshold": 30,
+                "checkModuleBody": true
+            },
+    
+            "UsingThisForm": false,
+    
+            "UsingServiceTag": {
+                "serviceTags": "пофиксить|доделать|тестовый режим|todo|fixme|!!|mrg|@|отладка|debug|для\\s*отладки|(\\{\\{|\\}\\})КОНСТРУКТОР_|(\\{\\{|\\}\\})MRG|Вставить\\s*содержимое\\s*обработчика|Paste\\s*handler\\s*content|Insert\\s*handler\\s*code|Insert\\s*handler\\s*content|Insert\\s*handler\\s*contents"
+            },
+    
+            "GetFormMethod": false,
+    
+            "UsingObjectNotAvailableUnix": false,
+    
+            "NestedTernaryOperator": false,
+    
+            "SpaceAtStartComment": false,
+    
+            "CompilationDirectiveLost": false,
+    
+            "CodeOutOfRegion": false,
+    
+            "NonStandardRegion": false,
+
+            "DeprecatedCurrentDate": false,
+
+            "DeprecatedAttributes8312": false,
+
+            "DeprecatedMethods8317": false,
+
+            "UsingSynchronousCalls": false,
+
+            "ExcessiveAutoTestCheck": false,
+
+            "IsInRoleMethodDiagnostic": false
+
+        }
+
+    }
+    
+  }
