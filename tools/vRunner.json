@@ -1,0 +1,43 @@
+{   "$schema": "https://raw.githubusercontent.com/silverbulleters/vanessa-runner/develop/vanessa-runner-schema.json",   
+    "default": {
+        "--db-user": "Администратор",
+        "--db-pwd": "",
+        "--workspace": ".",
+        "--additional": "/DisplayAllFunctions /L ru /i Taxi /Debug -http -attach /DebuggerURL http://http://localhost:1550",
+        "--ordinaryapp": "0"
+    },
+    "vanessa": {
+        "--db-user": "Администратор",
+        "--db-pwd": "",
+        "--vanessasettings": "./tools/JSON/vanessaConf.json",
+        "--ordinaryapp": "0"
+    },
+    "xunit": {
+        "--db-user": "Администратор",
+        "--db-pwd": "",
+        "--xddConfig": "./tools/JSON/xddTestRunnerConf.json",
+        "testsPath": "./tests/smoke",
+        "--reportsxunit": "ГенераторОтчетаJUnitXML{out/junit/smoke.xml};ГенераторОтчетаAllureXMLВерсия2{out/allure/allure-smoke.xml}",
+        "--xddExitCodePath": "./xddExitCodePath.txt",
+        "--ordinaryapp": "0"
+    },
+    "syntax-check": {
+        "--groupbymetadata": true,
+        "--mode": ["-Server", "-ExternalConnection", "-ThinClient", "-WebClient"],
+        "--exception-file": "./tools/JSON/ИсключенияИзСинтаксическихПроверок.txt",
+        "-AllExtensions" : true
+    },
+    "run": {
+        "--command": "ЗапуститьОбновлениеИнформационнойБазы;ЗавершитьРаботуСистемы;"
+    },
+    "updatedb": {
+        "--v1": true,
+        "--uccode": ""
+    },
+    "init-dev": {
+        "--v1": true
+    },
+    "update-dev": {
+        "--v1": true
+    }
+}
