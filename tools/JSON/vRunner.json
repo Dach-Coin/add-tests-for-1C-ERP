@@ -1,5 +1,6 @@
 {   "$schema": "https://raw.githubusercontent.com/silverbulleters/vanessa-runner/develop/vanessa-runner-schema.json",   
     "default": {
+        "--ibconnection": "/S localhost\\ERP_demo",
         "--db-user": "Администратор",
         "--db-pwd": "",
         "--workspace": ".",
