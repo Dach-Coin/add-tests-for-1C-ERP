@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0"?>
 <config xmlns="http://v8.1c.ru/v8/tech-log">
-	<log history="72" location="D:\1c_logs\IB_Name">
+	<log history="72" location="D:\1С_logs">
 		<property name="all"/>
 		<event>
 			<eq property="name" value="ADMIN"/>
@@ -11,9 +11,9 @@
 		<event>
 			<eq property="name" value="LEAKS"/>
 		</event>
-		<event>
+		<!-- <event>
 			<eq property="name" value="CONN"/>
-		</event>
+		</event> -->
 		<event>
 			<eq property="name" value="MEM"/>
 		</event>
@@ -29,7 +29,7 @@
 		</event>
 		<event>
 			<eq property="name" value="TTIMEOUT"/>
-			<gt property="duration" value="50000"/>
+			<gt property="duration" value="100000"/>
 		</event>
 		<event>
 			<eq property="name" value="SDBL"/>
@@ -49,7 +49,7 @@
 		</event>
 		<event>
 			<eq property="name" value="TLOCK"/>
-			<gt property="duration" value="50000"/>
+			<gt property="duration" value="100000"/>
 		</event>
 		<event>
 			<eq property="Name" value="EXCP"/>
@@ -64,6 +64,6 @@
 			<gt property="lkato" value="0"/>
 		</event>
 	</log>
-	<dump create="true" type="3" location="D:\1c_logs\Dump" externaldump="1" prntscrn="false"/>
+	<dump create="true" type="3" location="D:\1С_logs" externaldump="1" prntscrn="false"/>
 	<dbmslocks/>
 </config>
