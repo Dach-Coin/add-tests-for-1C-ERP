@@ -57,12 +57,12 @@
 		<event>
 			<eq property="Name" value="EXCPCNTX"/>
 		</event>
-		<event>
+		<!-- <event>
 			<gt property="lkpto" value="0"/>
 		</event>
 		<event>
 			<gt property="lkato" value="0"/>
-		</event>
+		</event> -->
 	</log>
 	<dump create="true" type="3" location="D:\1С_logs" externaldump="1" prntscrn="false"/>
 	<dbmslocks/>
