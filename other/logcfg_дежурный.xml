@@ -4,66 +4,83 @@
 		<property name="all"/>
 		<event>
 			<eq property="name" value="ADMIN"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="name" value="PROC"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="name" value="LEAKS"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<!-- <event>
 			<eq property="name" value="CONN"/>
 		</event> -->
 		<event>
 			<eq property="name" value="MEM"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="name" value="ATTN"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="name" value="QERR"/>
 			<gt property="duration" value="100000"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="Name" value="TDEADLOCK"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="name" value="TTIMEOUT"/>
 			<gt property="duration" value="100000"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="name" value="SDBL"/>
 			<gt property="duration" value="100000"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="name" value="SDBL"/>
 			<eq property="func" value="setrollbackonly"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="name" value="DBMSSQL"/>
 			<gt property="duration" value="100000"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="name" value="CALL"/>
 			<gt property="memorypeak" value="100000000"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="name" value="TLOCK"/>
 			<gt property="duration" value="100000"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="Name" value="EXCP"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<eq property="Name" value="EXCPCNTX"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<!-- <event>
 			<gt property="lkpto" value="0"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
 			<gt property="lkato" value="0"/>
+			<like property="p:processName" value="ERP_demo"/>
 		</event> -->
 	</log>
-	<dump create="true" type="3" location="D:\1С_logs" externaldump="1" prntscrn="false"/>
+	<dump create="true" type="3" location="D:\1С_logs\Dumps" externaldump="1" prntscrn="false"/>
 	<dbmslocks/>
 </config>
