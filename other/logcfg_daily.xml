@@ -53,6 +53,8 @@
 			<eq property="name" value="DBMSSQL"/>
 			<gt property="duration" value="100000"/>
 			<like property="p:processName" value="ERP_demo"/>
+			<!-- <like property="Sql" value="%InfoRg122600%"/>
+			<like property="Sql" value="%INSERT%"/> -->
 		</event>
 		<event>
 			<eq property="name" value="CALL"/>
