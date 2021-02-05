@@ -1,4 +1,0 @@
-BACKUP DATABASE [rnc] TO  DISK = N'G:\DB_BCKP\rnc.bak' WITH  COPY_ONLY, NOFORMAT, NOINIT,  NAME = N'rnc-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10
-GO
-
-
