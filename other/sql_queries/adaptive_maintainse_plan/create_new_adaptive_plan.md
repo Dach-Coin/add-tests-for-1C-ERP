@@ -31,7 +31,7 @@
         
         `@Exec_Print = 0`, `@printCmds = 1`, `@outputResults = 1`
 
-        Скрипты: [adaptive_maintainse_plan](/)
+        Скрипты: [adaptive_maintainse_plan](/other/sql_queries/adaptive_maintainse_plan)
 
         Также можно уменьшить или увеличит параметр `@rebuildThreshold` и посмотреть как изменится вывод
         (параметр регулирует порог, начиная с которого выполняется REBUILD, а не REORGANIZE)
