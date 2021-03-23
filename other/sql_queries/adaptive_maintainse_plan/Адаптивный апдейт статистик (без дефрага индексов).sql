@@ -28,4 +28,5 @@ EXEC dbo.usp_AdaptiveIndexDefrag
  , @updateStatsWhere = 0 /* 1 = updates only index related stats; 0 = updates all stats in table */
  , @statsSample = 'FULLSCAN' /* Valid options are: NULL, <percentage>, FULLSCAN, and RESAMPLE */
  , @disableNCIX = 1  /* 0 = does NOT disable non-clustered indexes prior to a rebuild; 1 = disables non-clustered indexes prior to a rebuild, if the database is not being replicated (space saving feature) */ 
- , @offlinelocktimeout = -1; /* -1 = (default) indicates no time-out period; Any other positive integer sets the number of milliseconds that will pass before Microsoft SQL Server returns a locking error */
+ , @offlinelocktimeout = -1 /* -1 = (default) indicates no time-out period; Any other positive integer sets the number of milliseconds that will pass before Microsoft SQL Server returns a locking error */
+ , @maxDopRestriction = 4; /* specifies a processor limit for index rebuilds and statistics updates. If not specified, defrag operations will use the system MaxDOP setting, up to a limit of 8 */
