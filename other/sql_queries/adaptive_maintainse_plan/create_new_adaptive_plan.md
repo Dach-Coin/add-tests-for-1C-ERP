@@ -6,31 +6,32 @@
         (если целевая БД для обслуживания большая и высоконагруженная и планируется распараллелить обслуживание, если нет - достаточно только `msdb`)
 
     Результаты будет примерно такие:
-        ```text
-        Droping existing objects
-        Preserving historic data
-        tbl_AdaptiveIndexDefrag_log table created
-        tbl_AdaptiveIndexDefrag_Analysis_log table created
-        tbl_AdaptiveIndexDefrag_Exceptions table created
-        tbl_AdaptiveIndexDefrag_Working table created
-        tbl_AdaptiveIndexDefrag_Stats_Working table created
-        tbl_AdaptiveIndexDefrag_Stats_log table created
-        tbl_AdaptiveIndexDefrag_IxDisableStatus table created
-        Copying old data...
-        Done copying old data...
-        Removed old tables...
-        Procedure usp_AdaptiveIndexDefrag created
-        Reporting views created
-        Procedure usp_AdaptiveIndexDefrag_PurgeLogs created (Default purge is 90 days old)
-        Procedure usp_AdaptiveIndexDefrag_CurrentExecStats created (Use this to monitor defrag loop progress)
-        Procedure usp_AdaptiveIndexDefrag_Exceptions created (If the defrag should not be daily, use this to set on which days to disallow it. It can be on entire DBs, tables and/or indexes)
-        All done!
-        ```
+    ```text
+    Droping existing objects
+    Preserving historic data
+    tbl_AdaptiveIndexDefrag_log table created
+    tbl_AdaptiveIndexDefrag_Analysis_log table created
+    tbl_AdaptiveIndexDefrag_Exceptions table created
+    tbl_AdaptiveIndexDefrag_Working table created
+    tbl_AdaptiveIndexDefrag_Stats_Working table created
+    tbl_AdaptiveIndexDefrag_Stats_log table created
+    tbl_AdaptiveIndexDefrag_IxDisableStatus table created
+    Copying old data...
+    Done copying old data...
+    Removed old tables...
+    Procedure usp_AdaptiveIndexDefrag created
+    Reporting views created
+    Procedure usp_AdaptiveIndexDefrag_PurgeLogs created (Default purge is 90 days old)
+    Procedure usp_AdaptiveIndexDefrag_CurrentExecStats created (Use this to monitor defrag loop progress)
+    Procedure usp_AdaptiveIndexDefrag_Exceptions created (If the defrag should not be daily, use this to set on which days to disallow it. It can be on entire DBs, tables and/or indexes)
+    All done!
+    ```
+
     - Проверяем работу скриптов для адаптивного обслуживания на копии целевой БД, в режиме отладки, выставив параметры:
         
         `@Exec_Print = 0`, `@printCmds = 1`, `@outputResults = 1`
 
-        Скрипты: [adaptive_maintainse_plan](adaptive_maintainse_plan)
+        Скрипты: [adaptive_maintainse_plan](/)
 
         Также можно уменьшить или увеличит параметр `@rebuildThreshold` и посмотреть как изменится вывод
         (параметр регулирует порог, начиная с которого выполняется REBUILD, а не REORGANIZE)
