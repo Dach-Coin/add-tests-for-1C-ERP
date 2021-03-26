@@ -26,6 +26,7 @@
     Procedure usp_AdaptiveIndexDefrag_Exceptions created (If the defrag should not be daily, use this to set on which days to disallow it. It can be on entire DBs, tables and/or indexes)
     All done!
     ```
+    - После выполнения скрипта вносим некоторые исправления в хранимую процедуру `[dbo].[usp_AdaptiveIndexDefrag]`, используя скрипт [usp_upd_AdaptiveIndexDefrag](/other/sql_queries/adaptive_maintainse_plan/usp_upd_AdaptiveIndexDefrag.sql)
 
     - Проверяем работу скриптов для адаптивного обслуживания на копии целевой БД, в режиме отладки, выставив параметры:
         

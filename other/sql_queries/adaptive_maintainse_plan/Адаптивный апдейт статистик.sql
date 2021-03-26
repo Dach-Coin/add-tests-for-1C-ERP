@@ -1,60 +1,32 @@
-USE [ERP_demo]
-
-IF OBJECT_ID (N'tempdb..##tt123', N'U') IS NOT NULL DROP TABLE ##tt123;
-
-select
-    o.name AS [TableName],
-    a.name AS [StatName],
-    a.rowmodctr AS [RowsChanged],
-	a.rowcnt,
-	ROUND(SQRT(1000 * a.rowcnt), 0) AS threshold,
-	CASE
-		WHEN SQRT(1000 * a.rowcnt) < a.rowmodctr AND a.rowcnt > 0 THEN 1
-		ELSE 0
-	END AS [NeedUpdate],
-    STATS_DATE(s.object_id, s.stats_id) AS [LastUpdate],
-    o.is_ms_shipped,
-    s.is_temporary,
-    p.*,
-	'UPDATE STATISTICS [dbo].[' + o.name + '] ([' + a.name + ']) WITH FULLSCAN' AS [sqltext],
-	ROW_NUMBER() OVER(order by a.rowmodctr desc, STATS_DATE(s.object_id, s.stats_id) ASC) AS [numrow]
-into ##tt123
-from sys.sysindexes a
-    inner join sys.objects o
-    on a.id = o.object_id
-        and o.type = 'U'
-        and a.id > 100
-        and a.indid > 0
-    left join sys.stats s
-    on a.name = s.name
-    left join (
-SELECT
-        p.[object_id]
-, p.index_id
-, total_pages = SUM(a.total_pages)
-    FROM sys.partitions p WITH(NOLOCK)
-        JOIN sys.allocation_units a WITH(NOLOCK) ON p.[partition_id] = a.container_id
-    GROUP BY 
-p.[object_id]
-, p.index_id
-) p ON o.[object_id] = p.[object_id] AND p.index_id = s.stats_id
-WHERE
-	/* Отбор по статистике для обновления (без учета количества строк в таблице по алгоритму, как с флагом трассировки 2371 */
-	CASE
-		WHEN SQRT(1000 * a.rowcnt) < a.rowmodctr AND a.rowcnt > 0 THEN 1
-		ELSE 0
-	END = 1;
-
-/* авто-вызов команд */ 
+/* Используем хранимые процедуры, заранее созданные скриптом: https://github.com/microsoft/tigertoolbox/blob/master/AdaptiveIndexDefrag/usp_AdaptiveIndexDefrag.sql
+   Хранимые процедуры и таблицы логов должны быть заранее созданы в базе [msdb]
  
-DECLARE @nbr_statements INT = (SELECT COUNT(*) FROM ##tt123), @i INT = 1;
+   Адаптивный апдейт статистик */
  
-WHILE   @i <= @nbr_statements
-BEGIN
-    DECLARE @sql_code NVARCHAR(4000) = (SELECT sqltext FROM ##tt123 WHERE numrow = @i);
-    PRINT @sql_code; 
-	EXEC sp_executesql @sql_code;
-    SET @i +=1;
-END;
+USE [msdb]
  
-drop table ##tt123
+DECLARE @limitMinutes int = 480 /* 8 hours */
+ 
+SET DATEFIRST 1 /* (Mondey) */
+IF DatePart(weekday, GetDate()) IN (5, 6) SET @limitMinutes = 1440 /* 24 hours */
+ 
+EXEC dbo.usp_AdaptiveIndexDefrag  
+  @Exec_Print = 1 /* 1 = execute commands; 0 = print commands only */
+ , @printCmds = 0 /* 1 = print commands; 0 = do not print commands */
+ , @outputResults = 0 /* 1 = output fragmentation information; 0 = do not output */
+ , @debugMode = 0 /* display some useful comments to help determine if/where issues occur; 1 = display debug comments; 0 = do not display debug comments*/
+ , @timeLimit = @limitMinutes
+ , @dbScope = 'ERP_demo'
+ , @defragOrderColumn = 'page_count' /* Valid options are: range_scan_count, fragmentation, page_count */
+ , @forceRescan = 1   /* Whether to force a rescan of indexes into the tbl_AdaptiveIndexDefrag_Working table or not; 1 = force, 0 = use existing scan when available, used to continue where previous run left off */
+ , @defragDelay = '00:00:05'
+ , @minFragmentation = 100
+ , @rebuildThreshold = 100
+ , @minPageCount = 8
+ , @sortInTempDB = 1
+ , @updateStats = 1  /* 1 = updates stats when reorganizing; 0 = does not update stats when reorganizing */
+ , @updateStatsWhere = 0 /* 1 = updates only index related stats; 0 = updates all stats in table */
+ , @statsSample = 'FULLSCAN' /* Valid options are: NULL, <percentage>, FULLSCAN, and RESAMPLE */
+ , @disableNCIX = 1  /* 0 = does NOT disable non-clustered indexes prior to a rebuild; 1 = disables non-clustered indexes prior to a rebuild, if the database is not being replicated (space saving feature) */ 
+ , @offlinelocktimeout = -1 /* -1 = (default) indicates no time-out period; Any other positive integer sets the number of milliseconds that will pass before Microsoft SQL Server returns a locking error */
+ , @maxDopRestriction = 4;
