@@ -1,8 +1,9 @@
 # add-tests-for-1C-ERP
 Примеры сценарных и дымовых тестов на фреймворках V-ADD и xDD для 1C:ERP
 
-Прочая полезная информация:
+## Прочая полезная информация:
 Настройка "дежурного" мониторинга для серверов 1С и СУБД: [daily_monitoring.md](other/daily_monitoring.md)
+Настройка адаптивного обслуживания индексов и статистик СУБД: [create_new_adaptive_plan](/other/sql_queries/adaptive_maintainse_plan/create_new_adaptive_plan.md)
 
 <a id="markdown-Таблица собственных экспортных шагов для vanessa-add" name="Таблица собственных экспортных шагов для vanessa-add"></a>
 ## Таблица собственных экспортных шагов для vanessa-add
