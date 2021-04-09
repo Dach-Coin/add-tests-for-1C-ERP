@@ -196,3 +196,5 @@
     - проверка на "лицензионную чистоту": https://1c.ru/rus/support/surrog.htm?utm_source=its_ru&utm_medium=news&utm_campaign=antipiracy
 
 8. Если в целевой БД имеются проблемы с обслуживанием индексов и статистик (например, стандартному плану не хватает времени технологического окна), то можно применить методику адаптивного обслуживания, изложенную здесь: [create_new_adaptive_plan.md](sql_queries/adaptive_maintainse_plan/create_new_adaptive_plan.md)
+
+9. Несколько полезных скриптов для обслуживания баз (очистка кэша, завершение сеансов, восстановление базы из бэкапа): [scripts](/scripts)
