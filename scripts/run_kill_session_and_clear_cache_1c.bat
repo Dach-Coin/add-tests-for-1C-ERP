@@ -1,0 +1,1 @@
+Powershell -File ./kill_session_and_clear_cache_1c.ps1
