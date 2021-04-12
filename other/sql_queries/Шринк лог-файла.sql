@@ -1,0 +1,4 @@
+USE [ERP_demo];
+GO
+DBCC SHRINKFILE (N'ERP_demo_log', 81920, TRUNCATEONLY);
+GO
