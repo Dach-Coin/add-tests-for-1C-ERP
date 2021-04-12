@@ -2,6 +2,7 @@
 
 1. Настраиваем счетчики perfmon на ВСЕХ серверах.
 
+    Счетчики:
     - \Memory\% Committed Bytes In Use
     - \Memory\Available MBytes
     - \Processor(_Total)\% Processor Time
@@ -9,6 +10,8 @@
     - \System\Processor Queue Length
     - \PhysicalDisk(0 D:)\Avg. Disk Queue Length
     - \PhysicalDisk(1 C:)\Avg. Disk Queue Length
+
+    Возможные представления:
     - \Память\% использования выделенной памяти
     - \Память\Доступно МБ
     - \Процессор(_Total)\% загруженности процессора
@@ -16,19 +19,13 @@
     - \Система\Длина очереди процессора
     - \Физический диск(0 D:)\Средняя длина очереди диска
     - \Физический диск(1 C:)\Средняя длина очереди диска
+    - \Физический диск(0 D:)\Среднее время чтения с диска (с)
+    - \Физический диск(1 D:)\Среднее время записи на диск (с)
+    - \Физический диск(0 C:)\Среднее время чтения с диска (с)
+    - \Физический диск(1 C:)\Среднее время записи на диск (с)
 
 2. Настраиваем дополнительные счетчики perfmon на серверах БД:
 
-    - \SQLServer:Latches\Total Latch Wait Time (ms)
-    - \SQLServer:Locks(_Total)\Lock Timeouts/sec
-    - \SQLServer:Databases(tempdb)\Active Transactions
-    - \SQLServer:Databases(_Total)\Active Transactions
-    - \SQLServer:Buffer Manager\Page life expectancy
-    - \SQLServer:Buffer Manager\Buffer cache hit ratio
-    - \SQLServer:Buffer Manager\Page reads/sec
-    - \SQLServer:Buffer Manager\Page writes/sec
-    - \SQLServer:Buffer Manager\Lazy writes/sec
-    - \SQLServer:Plan Cache(_Total)\Cache Hit Ratio
     - \SQLServer:Latches\Total Latch Wait Time (ms)
     - \SQLServer:Locks(_Total)\Lock Timeouts/sec
     - \SQLServer:Databases(tempdb)\Active Transactions
@@ -44,6 +41,8 @@
     - Интервал выборки - 5;
     - Формат журнала: двоичный
     - файлы счетчиков весят немного, для хранения можно оставить каталог по умолчанию.
+
+    Примеры (шаблоны) настройки win-счетчиков см. здесь: [PerfMon](/other/PerfMon)
 
 4. Настраиваем "дежурный" технологический журнал (собирающий самые необходимые события, с фильтрами по целевой ИБ и длительности)
 
@@ -79,7 +78,6 @@
                     </event>
                     <event>
                         <eq property="name" value="QERR"/>
-                        <gt property="duration" value="100000"/>
                         <like property="p:processName" value="ERP_demo"/>
                     </event>
                     <event>
@@ -148,7 +146,7 @@
 
 5. Настраиваем на серверах СУБД сеансы отслеживания расширенных событий (extended events)
 
-    Скрипт для создания (указаны минимально-достаточные для оперативных расследований события):
+    Скрипт для создания сессии отслеживания запросов и ожиданий на блокировках (указаны минимально-достаточные для оперативных расследований события):
 
     ```sql
     CREATE EVENT SESSION [Query_Compilation_Execution] ON SERVER 
@@ -165,6 +163,26 @@
     ACTION(sqlserver.database_name,sqlserver.session_id,sqlserver.sql_text,sqlserver.username)
     WHERE ([sqlserver].[database_name]=N'ERP_demo' AND [duration]>=(1000000)))
     ADD TARGET package0.event_file(SET filename=N'D:\SQL\extended_events\Query_Compilation_Execution.xel',max_file_size=(10240))
+    WITH (MAX_MEMORY=4096 KB,EVENT_RETENTION_MODE=ALLOW_SINGLE_EVENT_LOSS,MAX_DISPATCH_LATENCY=3 SECONDS,MAX_EVENT_SIZE=0 KB,MEMORY_PARTITION_MODE=NONE,TRACK_CAUSALITY=OFF,STARTUP_STATE=ON)
+    GO
+    ```
+
+    Скрипт для создания сессии отслеживания взаимоблокировок:
+
+    ```sql
+    CREATE EVENT SESSION [Deadlock_analize] ON SERVER 
+    ADD EVENT sqlserver.database_xml_deadlock_report(
+    ACTION(sqlserver.database_name,sqlserver.session_id,sqlserver.sql_text,sqlserver.username)
+    WHERE ([database_name]=N'ERP_demo')),
+    ADD EVENT sqlserver.lock_deadlock(SET collect_database_name=(1),collect_resource_description=(1)
+    ACTION(sqlserver.database_name,sqlserver.session_id,sqlserver.sql_text,sqlserver.username)
+    WHERE ([database_name]=N'ERP_demo')),
+    ADD EVENT sqlserver.lock_deadlock_chain(SET collect_database_name=(1),collect_resource_description=(1)
+    ACTION(sqlserver.database_name,sqlserver.session_id,sqlserver.sql_text,sqlserver.username)
+    WHERE ([database_name]=N'ERP_demo')),
+    ADD EVENT sqlserver.xml_deadlock_report(
+    ACTION(sqlserver.database_name,sqlserver.session_id,sqlserver.sql_text,sqlserver.username))
+    ADD TARGET package0.event_file(SET filename=N'D:\SQL\extended_events\Deadlock_analize.xel',max_rollover_files=(10))
     WITH (MAX_MEMORY=4096 KB,EVENT_RETENTION_MODE=ALLOW_SINGLE_EVENT_LOSS,MAX_DISPATCH_LATENCY=3 SECONDS,MAX_EVENT_SIZE=0 KB,MEMORY_PARTITION_MODE=NONE,TRACK_CAUSALITY=OFF,STARTUP_STATE=ON)
     GO
     ```
