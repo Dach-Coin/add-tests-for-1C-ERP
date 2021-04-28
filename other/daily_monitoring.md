@@ -215,7 +215,7 @@
     - База `tempdb` разбита на несколько файлов, в зависимости от ядер ЦП, задействованных сервером БД https://qastack.ru/dba/33448/splitting-tempdb-into-multiples-files-equal-to-number-of-cpus
     - обновления MS SQL и флаги трассировки: https://its.1c.ru/db/metod8dev/content/5904/hdoc и https://its.1c.ru/db/metod8dev/content/5946/hdoc
     - при необходимости воспользоваться для анализа скриптами из папки [sql_queries](sql_queries)
-    - проверка на "лицензионную чистоту": https://1c.ru/rus/support/surrog.htm?utm_source=its_ru&utm_medium=news&utm_campaign=antipiracy
+    - проверка на "лицензионную чистоту": https://1c.ru/rus/support/surrog.htm?utm_source=its_ru&utm_medium=news&utm_campaign=antipiracy и https://infostart.ru/1c/articles/1119217/
     - базовые правила настройки учетной записи сервера 1С: https://habr.com/ru/company/pc-administrator/blog/349620/
 
 8. Если в целевой БД имеются проблемы с обслуживанием индексов и статистик (например, стандартному плану не хватает времени технологического окна), то можно применить методику адаптивного обслуживания, изложенную здесь: [create_new_adaptive_plan.md](sql_queries/adaptive_maintainse_plan/create_new_adaptive_plan.md)
