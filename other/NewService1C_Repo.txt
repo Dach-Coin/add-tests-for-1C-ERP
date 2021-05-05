@@ -1,0 +1,2 @@
+cd "C:\Program Files\1cv8\8.3.18.1289\bin"
+.\crserver.exe -instsrvc -d D:\1C_Repo -usr .\USR1CV8
