@@ -27,7 +27,6 @@
 		</event>
 		<event>
 			<eq property="name" value="QERR"/>
-			<gt property="duration" value="100000"/>
 			<like property="p:processName" value="ERP_demo"/>
 		</event>
 		<event>
