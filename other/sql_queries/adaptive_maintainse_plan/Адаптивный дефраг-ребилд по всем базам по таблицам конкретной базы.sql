@@ -28,19 +28,20 @@ BEGIN
 
 		IF OBJECT_ID (N'tempdb..##tt111', N'U') IS NOT NULL DROP TABLE ##tt111;
 
-		-- получаем все пользовательские таблицы базы, отсортировав их в порядке убывания размера данных
+		-- получаем все пользовательские таблицы базы, отсортировав их в порядке убывания размера данных и фрагментированности
 
 		DECLARE @change_context nvarchar(100) = QUOTENAME(@DBname) + N'.sys.sp_executesql'
 
 		DECLARE @sql_text nvarchar(max) = 
 		'SELECT
-		  ROW_NUMBER() OVER(order by (SUM(a.total_pages) * 8) desc) AS numrow,
-		  t.Name													AS TableName,
-		  s.Name													AS SchemaName,
-		  p.Rows													AS RowCounts,  
-		  SUM(a.total_pages) * 8									AS TotalSpaceKB,
-		  SUM(a.used_pages) * 8										AS UsedSpaceKB,
-		  (SUM(a.total_pages) - SUM(a.used_pages)) * 8				AS UnusedSpaceKB
+		  ROW_NUMBER() OVER(order by (SUM(a.total_pages) * 8) desc, avg_fragmentation_in_percent DESC) AS numrow,
+		  t.Name AS TableName,
+		  s.Name AS SchemaName,
+		  p.Rows AS RowCounts,  
+		  SUM(a.total_pages) * 8 AS TotalSpaceKB,
+		  SUM(a.used_pages) * 8	AS UsedSpaceKB,
+		  (SUM(a.total_pages) - SUM(a.used_pages)) * 8 AS UnusedSpaceKB,
+		  ind.avg_fragmentation_in_percent AS avg_fragmentation_in_percent
 		INTO ##tt111
 		FROM
 		  sys.tables t
@@ -48,11 +49,14 @@ BEGIN
 		  INNER JOIN sys.partitions p ON i.object_id = p.object_id AND i.index_id = p.index_id
 		  INNER JOIN sys.allocation_units a ON p.partition_id = a.container_id
 		  INNER JOIN sys.objects obj ON t.name = obj.name AND obj.type in (N''U'')
+		  INNER JOIN sys.dm_db_index_physical_stats (DB_ID(), NULL, NULL , NULL, ''LIMITED'') ind
+		  ON t.Name = OBJECT_NAME(ind.object_id) AND ind.index_id > 0 AND ind.avg_fragmentation_in_percent > 5.0 AND ind.page_count > 128
 		  LEFT OUTER JOIN sys.schemas s ON t.schema_id = s.schema_id
 		GROUP BY
-		  t.Name, s.Name, p.Rows
+		  t.Name, s.Name, p.Rows, ind.avg_fragmentation_in_percent
 		ORDER BY
-		  TotalSpaceKB DESC;'
+		  TotalSpaceKB DESC,
+		  avg_fragmentation_in_percent DESC'
 
 		EXEC @change_context @sql_text
 
@@ -60,7 +64,7 @@ BEGIN
 
 		WHILE @j <= @nbr_statementsTab
 
-		-- цикл по таблицам текущей базы (в первую очередь обрабатываются наиболее "тяжелые" таблицы)
+		-- цикл по таблицам текущей базы (в первую очередь обрабатываются наиболее "тяжелые" и фрагментированные таблицы)
 
 		BEGIN
     
@@ -71,7 +75,7 @@ BEGIN
 			PRINT @FullTableName
 
 			USE [msdb]
-
+			
 			BEGIN
 
 				-- полезная нагрузка: вызов процедуры адаптивного обслуживания
@@ -99,7 +103,7 @@ BEGIN
 				 , @onlineRebuild = 1; /* defaults to 0 (offline rebuild) or optionally 1 (online rebuild if possible)*/
 
 			END;
-	
+			
 			SET @j +=1;
 
 		END;
